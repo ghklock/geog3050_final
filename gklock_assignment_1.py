@@ -59,6 +59,8 @@ def import_data(filename):
         split_list[3]=float(split_list[3])
         participants.append(split_list)
     return(participants)
+filename = input("Enter file path for csv file: ")
+import_data(filename)
 #import_data(filename='C:\\Users\\gretc\\Desktop\\Geog3050\\a1\\test_input.csv')
 """
     This function is used for importing a CSV file to our program
