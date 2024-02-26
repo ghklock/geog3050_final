@@ -59,11 +59,8 @@ def import_data(filename):
         split_list[3]=float(split_list[3])
         participants.append(split_list)
     return(participants)
-filename = input("Enter file path for csv file: ")
-stripped_file=filename.strip('"')
-    
-import_data(stripped_file)
-#import_data(filename='C:\\Users\\gretc\\Desktop\\Geog3050\\a1\\test_input.csv')
+#filename = input("Enter file path for csv file: ")
+#stripped_file=filename.strip('"')
 """
     This function is used for importing a CSV file to our program
     as a list of list. Each row will be stored as a list. Therefore,
@@ -120,7 +117,7 @@ def attack_multiplier(attacker_type, defender_type):
     else:
         damage=1.0
         return(damage)
-    """
+"""
     Attack Multiplier Chart:
         - Water -> Fire (Damage x2.5)
         - Electric -> Water (Damage x1.3)
@@ -148,7 +145,7 @@ def attack_multiplier(attacker_type, defender_type):
     Task Objectives:
     1. Using if conditions for decision making
     2. Combining several condition statements into one
-    """
+"""
     ##### Pseudocode #####
     # 1. If Attacker is Water and Defender is Fire, return 2.5
     # 2. Else if Attacker is Electric and Defender is Water, return 1.3
@@ -284,7 +281,7 @@ def tournament(participants):
             break
     print(wins)
     return(wins)
-tournament(participants)
+#tournament(participants)
 """
     This function simulates a tournament between a list of participants.
     Tournament works as follows:
