@@ -60,7 +60,9 @@ def import_data(filename):
         participants.append(split_list)
     return(participants)
 filename = input("Enter file path for csv file: ")
-import_data(filename)
+stripped_file=filename.strip('"')
+    
+import_data(stripped_file)
 #import_data(filename='C:\\Users\\gretc\\Desktop\\Geog3050\\a1\\test_input.csv')
 """
     This function is used for importing a CSV file to our program
@@ -98,7 +100,6 @@ import_data(filename)
     # 4. When you are done with reading all lines & storing the information in a list of lists,
     #    return the MAIN list.
     ######################
-
 
 def attack_multiplier(attacker_type, defender_type):
     if attacker_type=='Water' and defender_type=='Fire':
@@ -249,7 +250,10 @@ def fight(participant1, participant2, first2attack):
     # 5. Return [winner, rounds]
     ######################
 def tournament(participants):
-    wins = [0,0,0,0,0,0]
+    wins = []
+    for n in range(0, len(participants)):
+        number = 0
+        wins.append(number)
     i=0
     j=1
     while i<6:
@@ -278,7 +282,7 @@ def tournament(participants):
             break
     print(wins)
     return(wins)
-#tournament(participants)
+tournament(participants)
 """
     This function simulates a tournament between a list of participants.
     Tournament works as follows:
