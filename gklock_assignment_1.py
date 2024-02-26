@@ -256,6 +256,8 @@ def tournament(participants):
         wins.append(number)
     i=0
     j=1
+    count = len(participants)
+    count_2 = count-1
     while i<6:
         #print(i,j)
         home_fight = fight(participants[i],participants[j],1)
@@ -275,10 +277,10 @@ def tournament(participants):
             #print(participants[j][0], "won away")
             wins[j]=wins[j]+1
         j=j+1
-        if j==6:
+        if j==count:
             i=i+1
             j=i+1
-        if i==5:
+        if i==count_2:
             break
     print(wins)
     return(wins)
