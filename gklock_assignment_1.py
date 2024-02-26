@@ -59,7 +59,7 @@ def import_data(filename):
         split_list[3]=float(split_list[3])
         participants.append(split_list)
     return(participants)
-import_data(filename='C:\\Users\\gretc\\Desktop\\Geog3050\\a1\\test_input.csv')
+#import_data(filename='C:\\Users\\gretc\\Desktop\\Geog3050\\a1\\test_input.csv')
 """
     This function is used for importing a CSV file to our program
     as a list of list. Each row will be stored as a list. Therefore,
@@ -276,7 +276,7 @@ def tournament(participants):
             break
     print(wins)
     return(wins)
-tournament(participants)
+#tournament(participants)
 """
     This function simulates a tournament between a list of participants.
     Tournament works as follows:
