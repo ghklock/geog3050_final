@@ -73,10 +73,22 @@ def printNumericalFieldNames(inputFc, workspace):
 def exportFeatureClassesByShapeType(input_geodatabase, shapeType, output_geodatabase):
     import arcpy
         #this imports arcpy
-    arcpy.env.workspace = 
+    import os
+        #this imports os
+    arcpy.env.workspace = input_geodatabase
         #this defines the workspace in arcpy as the inputted "workplace" file path
+    arcpy.CreateFileGDB_management('S:\\2024_Spring\\GEOG_3050\\STUDENT\\gklock\\a2\\a2_data', output_geodatabase)
+    newgeo=
+        #this defines the workspace in arcpy as the inputted "workplace" file path
+    fc_list = arcpy.ListFeatureClasses()
+    print(fc_list)
+    for shapefile in fc_list:
+        describe= arcpy.Describe(shapefile)
+        if describe.shapeType==shapeType:
+            out_featureclass = os.path.join(newgeo, os.path.splitext(shapefile)[0])
+            arcpy.management.CopyFeatures(shapefile, out_featureclass)
     pass
-
+exportFeatureClassesByShapeType('S:\\2024_Spring\\GEOG_3050\\STUDENT\\gklock\\a2\\a2_data\\hw2.gdb', "Point" ,"point6.gdb")
 ###################################################################### 
 # Problem 4 (40 Points)
 #
