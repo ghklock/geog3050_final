@@ -20,24 +20,27 @@ def hawkid():
 
 ###################################################################### 
 def printFeatureClassNames(workspace):
-    import arcpy
-        #this imports arcpy
-    arcpy.env.workspace = workspace
-        #this defines the workspace in arcpy as the inputted "workplace" file path
-    fcList = arcpy.ListFeatureClasses()
-        #this establishes the feature class list as the feature classes in the workspace
-    for fc in fcList:
-        desc= arcpy.Describe(fc)
-            #this creates a Describe object
-        if desc.shapeType=="Polygon":
-            print(f"{desc.baseName} is a polygon feature class.")
-        elif desc.shapeType=="Polyline":
-            print(f"{desc.baseName} is a polyline feature class.")
-        elif desc.shapeType=="Point":
-            print(f"{desc.baseName} is a point feature class.")
-        else: 
-            print(f"{desc.baseName} is neither a polygon, point nor polyline feature class.")
-    pass
+    try:
+        import arcpy
+            #this imports arcpy
+        arcpy.env.workspace = workspace
+            #this defines the workspace in arcpy as the inputted "workplace" file path
+        fcList = arcpy.ListFeatureClasses()
+            #this establishes the feature class list as the feature classes in the workspace
+        for fc in fcList:
+            desc= arcpy.Describe(fc)
+                #this creates a Describe object
+            if desc.shapeType=="Polygon":
+                print(f"{desc.baseName} is a polygon feature class.")
+            elif desc.shapeType=="Polyline":
+                print(f"{desc.baseName} is a polyline feature class.")
+            elif desc.shapeType=="Point":
+                print(f"{desc.baseName} is a point feature class.")
+            else: 
+                print(f"{desc.baseName} is neither a polygon, point nor polyline feature class.")
+    except arcpy.ExecuteError:
+       print(arcpy.GetMessages(2))
+
 #printFeatureClassNames("S:\\2024_Spring\\GEOG_3050\\STUDENT\\gklock\\a2\\a2_data\\hw2.gdb")
 
 ###################################################################### 
@@ -49,19 +52,21 @@ def printFeatureClassNames(workspace):
 
 ###################################################################### 
 def printNumericalFieldNames(inputFc, workspace):
-    import arcpy
-        #this imports arcpy
-    arcpy.env.workspace = workspace
-        #this defines the workspace in arcpy as the inputted "workplace" file path
-    desc=arcpy.Describe(inputFc)
-        #this creates a Describe object which pulls the properties of the input feature class (inputFc)
-    fields=desc.fields
-        #this establishes the fields object as the description of all the fields in the inputFc
-    for field in fields:
-        if field.type in ["Integer", "Float","OID","Double"]:
-            #these are all the numeric field types
-            print(f"{field.name} has a type of {field.type}")
-    pass
+    try:
+        import arcpy
+            #this imports arcpy
+        arcpy.env.workspace = workspace
+            #this defines the workspace in arcpy as the inputted "workplace" file path
+        desc=arcpy.Describe(inputFc)
+            #this creates a Describe object which pulls the properties of the input feature class (inputFc)
+        fields=desc.fields
+            #this establishes the fields object as the description of all the fields in the inputFc
+        for field in fields:
+            if field.type in ["Integer", "Float","OID","Double"]:
+                #these are all the numeric field types
+                print(f"{field.name} has a type of {field.type}")
+    except arcpy.ExecuteError:
+       print(arcpy.GetMessages(2))
 #printNumericalFieldNames("S:\\2024_Spring\\GEOG_3050\\STUDENT\\gklock\\a2\\a2_data\\hw2.gdb\\bike_routes", "S:\\2024_Spring\\GEOG_3050\\STUDENT\\gklock\\a2\\a2_data\\hw2.gdb")
 ###################################################################### 
 # Problem 3 (30 Points)
@@ -71,24 +76,26 @@ def printNumericalFieldNames(inputFc, workspace):
 
 ###################################################################### 
 def exportFeatureClassesByShapeType(input_geodatabase, shapeType, output_geodatabase):
+    #Where input_geodatabase is the workspace, shapeType is "Point" "Polyline" or "Polygon" and output_geodatabase is the filepath for the database to be created. 
     import arcpy
         #this imports arcpy
     import os
         #this imports os
     arcpy.env.workspace = input_geodatabase
         #this defines the workspace in arcpy as the inputted "workplace" file path
-    arcpy.CreateFileGDB_management('S:\\2024_Spring\\GEOG_3050\\STUDENT\\gklock\\a2\\a2_data', output_geodatabase)
-    newgeo=
+    new_gdb = arcpy.CreateFileGDB_management(output_geodatabase, f"{shapeType}15")
+    print(new_gdb)
+    #newgeo = arcpy.CreateFileGDB_management('S:\\2024_Spring\\GEOG_3050\\STUDENT\\gklock\\a2\\a2_data', output_geodatabase)
         #this defines the workspace in arcpy as the inputted "workplace" file path
     fc_list = arcpy.ListFeatureClasses()
     print(fc_list)
     for shapefile in fc_list:
         describe= arcpy.Describe(shapefile)
         if describe.shapeType==shapeType:
-            out_featureclass = os.path.join(newgeo, os.path.splitext(shapefile)[0])
+            out_featureclass = os.path.join(f"{new_gdb}", os.path.splitext(shapefile)[0])
             arcpy.management.CopyFeatures(shapefile, out_featureclass)
     pass
-exportFeatureClassesByShapeType('S:\\2024_Spring\\GEOG_3050\\STUDENT\\gklock\\a2\\a2_data\\hw2.gdb', "Point" ,"point6.gdb")
+exportFeatureClassesByShapeType('S:\\2024_Spring\\GEOG_3050\\STUDENT\\gklock\\a2\\a2_data\\hw2.gdb', "Point" ,'S:\\2024_Spring\\GEOG_3050\\STUDENT\\gklock\\a2\\a2_data')
 ###################################################################### 
 # Problem 4 (40 Points)
 #
@@ -98,9 +105,15 @@ exportFeatureClassesByShapeType('S:\\2024_Spring\\GEOG_3050\\STUDENT\\gklock\\a2
 
 ###################################################################### 
 def exportAttributeJoin(inputFc, idFieldInputFc, inputTable, idFieldTable, workspace):
-    pass
+    import arcpy
+    arcpy.env.workspace = workspace
+    desc= arcpy.Describe(inputFc)
+    new_fc = arcpy.AddJoin_management(inputFc, idFieldInputFc, inputTable, idFieldTable)
+    arcpy.conversion.ExportFeatures(new_fc, f"{desc.name}_joined")
+    arcpy.management.ValidateJoin(inputFc, idFieldInputFc, inputTable, idFieldTable)
+    print(arcpy.GetMessages())
 
-
+#exportAttributeJoin('S:/2024_Spring/GEOG_3050/STUDENT/gklock/a2/a2_data/hw2.gdb/parks', 'PARK_ID', 'S:/2024_Spring/GEOG_3050/STUDENT/gklock/a2/a2_data/hw2.gdb/test_table.csv', 'PARK_ID', 'S:/2024_Spring/GEOG_3050/STUDENT/gklock/a2/a2_data/hw2.gdb')
 ######################################################################
 # MAKE NO CHANGES BEYOND THIS POINT.
 ######################################################################
